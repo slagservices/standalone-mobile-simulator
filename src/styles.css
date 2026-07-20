@@ -1,0 +1,155 @@
+:root {
+    --bg-transparent: rgba(0, 0, 0, 0); /* Important for frameless transparent window */
+    --frame-color: #1a1a1a;
+    --accent: #007acc;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-transparent);
+    overflow: hidden; /* No scrollbars on the outer window */
+}
+
+/* The device frame IS the entire window */
+.device-frame {
+    background-color: var(--frame-color);
+    border-radius: 40px; /* Physical phone rounded corners */
+    padding: 12px;
+    width: calc(100vw - 24px);
+    height: calc(100vh - 24px);
+    box-sizing: border-box;
+    box-shadow: inset 0 0 0 2px #444, inset 0 0 10px rgba(0,0,0,0.8);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Draggable area to move the frameless window */
+.drag-handle {
+    -webkit-app-region: drag; /* Electron specific: makes this area draggable */
+    width: 100%;
+    text-align: center;
+    color: #666;
+    padding-bottom: 10px;
+    cursor: grab;
+}
+
+/* Wrap trigger and overlay to group hover state */
+.controls-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+/* Show controls when hovering over the very top edge of the phone (the invisible trigger area) */
+.controls-trigger {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    z-index: 90;
+    -webkit-app-region: no-drag; 
+}
+
+/* When Javascript adds the 'active' class, expand the trigger zone to cover the menu */
+.controls-container.active .controls-trigger {
+    height: 250px;
+}
+
+/* The controls menu itself */
+.controls-overlay {
+    position: absolute;
+    top: 0px; /* Flush against the top edge */
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    padding-top: 30px; /* Give room at the top so it overlaps the dragging handle nicely */
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border: 1px solid #444;
+    border-top: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    width: 85%;
+    max-width: 350px;
+}
+
+/* Show the overlay when Javascript adds the 'active' class */
+.controls-container.active .controls-overlay {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+}
+
+.control-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    -webkit-app-region: no-drag; /* Buttons shouldn't drag the window */
+}
+
+select, button, input {
+    padding: 8px 12px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background-color: #2a2a2a;
+    color: white;
+    font-size: 14px;
+    outline: none;
+}
+
+#url-input {
+    flex-grow: 1;
+}
+
+button {
+    cursor: pointer;
+    background-color: #333;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover { background-color: #444; }
+button#go-btn { background-color: var(--accent); border-color: var(--accent); }
+button#go-btn:hover { background-color: #0098ff; }
+button.danger:hover { background-color: #d32f2f; border-color: #d32f2f; }
+
+.device-notch {
+    position: absolute;
+    top: 12px;
+    width: 140px;
+    height: 30px;
+    background-color: var(--frame-color);
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    z-index: 80;
+    pointer-events: none; /* Click right through it */
+}
+
+#device-screen {
+    background-color: white;
+    border-radius: 30px;
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+}

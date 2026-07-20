@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  simulator:
+    build: .
+    container_name: mobile-sim
+    ports:
+      - "8080:80"
+    restart: unless-stopped

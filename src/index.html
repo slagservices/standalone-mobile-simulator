@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Web Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="device-frame" id="device-frame">
+        <div class="controls-container">
+            <!-- Invisible trigger area at the very top -->
+            <div class="controls-trigger"></div>
+            
+            <!-- Floating overlay controls (appear on hover) -->
+            <div class="controls-overlay" id="controls">
+                <div class="drag-handle"><i class="fas fa-grip-lines"></i></div>
+            
+            <div class="control-row">
+                <input type="url" id="url-input" placeholder="https://..." value="https://example.com">
+                <button id="go-btn"><i class="fas fa-arrow-right"></i></button>
+            </div>
+            
+            <div class="control-row">
+                <select id="device-select">
+                    <option value="390x844">iPhone 14</option>
+                    <option value="430x932">iPhone 14 Max</option>
+                    <option value="360x800">Galaxy S22</option>
+                    <option value="412x915">Pixel 7</option>
+                    <option value="768x1024">iPad Mini</option>
+                    <option value="1024x1366">iPad Pro</option>
+                </select>
+                <button id="rotate-btn" title="Rotate"><i class="fas fa-sync-alt"></i></button>
+                <button id="close-btn" class="danger" title="Close"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        </div> <!-- End controls container -->
+
+        <div class="device-notch" id="notch"></div>
+        <webview id="device-screen" src="https://example.com"></webview>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
